@@ -269,21 +269,7 @@ className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-
 
 ## 🚀 Deployment
 
-### Netlify (Recommended)
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder to Netlify
-3. Set environment variables in Netlify dashboard
-
-### Vercel
-1. Connect your GitHub repository
-2. Set build command: `npm run build`
-3. Set output directory: `dist`
-4. Add environment variables
-
-### Manual Deployment
-1. Run `npm run build`
-2. Upload `dist` folder contents to your web server
-3. Configure environment variables on your hosting platform
+### Netlify :- https://loquacious-fudge-608546.netlify.app/
 
 ## 🔒 Environment Variables
 
