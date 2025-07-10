@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Camera, Upload, X, User, Eye, EyeOff } from 'lucide-react';
+import { Camera, Upload, X, User, Eye, EyeOff, Plus } from 'lucide-react';
 import { useResumeStore } from '../../store/resumeStore';
 
 export const PhotoSection: React.FC = () => {
@@ -24,7 +24,7 @@ export const PhotoSection: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
-        updatePersonal({ photo: result });
+        updatePersonal({ photo: result, includePhoto: true }); // Auto-enable when uploading
       };
       reader.readAsDataURL(file);
     }
@@ -53,26 +53,42 @@ export const PhotoSection: React.FC = () => {
           <Camera className="w-4 h-4 text-blue-500" />
           <span>Profile Photo</span>
         </label>
-        <button
-          onClick={togglePhotoVisibility}
-          className={`flex items-center space-x-2 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-            data.personal.includePhoto
-              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-          }`}
-        >
-          {data.personal.includePhoto ? (
-            <>
-              <Eye className="w-4 h-4" />
-              <span>Visible</span>
-            </>
-          ) : (
-            <>
-              <EyeOff className="w-4 h-4" />
-              <span>Hidden</span>
-            </>
-          )}
-        </button>
+        <div className="flex items-center space-x-2">
+          {/* Upload Button with Plus Icon */}
+          <button
+            onClick={triggerFileInput}
+            className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+              theme === 'dark'
+                ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-blue-500 hover:bg-blue-600 text-white'
+            } shadow-md hover:shadow-lg active:scale-95`}
+            title="Upload photo from desktop"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Upload</span>
+          </button>
+          
+          <button
+            onClick={togglePhotoVisibility}
+            className={`flex items-center space-x-2 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+              data.personal.includePhoto
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+            }`}
+          >
+            {data.personal.includePhoto ? (
+              <>
+                <Eye className="w-4 h-4" />
+                <span>Visible</span>
+              </>
+            ) : (
+              <>
+                <EyeOff className="w-4 h-4" />
+                <span>Hidden</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Photo Upload Area */}
@@ -96,16 +112,16 @@ export const PhotoSection: React.FC = () => {
           </div>
         ) : (
           <div
-            onClick={data.personal.includePhoto ? triggerFileInput : undefined}
-            className={`w-32 h-32 mx-auto border-3 border-dashed rounded-2xl flex flex-col items-center justify-center transition-all ${
-              data.personal.includePhoto
-                ? 'border-blue-300 dark:border-blue-600 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer'
-                : 'border-gray-300 dark:border-gray-600 cursor-not-allowed'
+            onClick={triggerFileInput}
+            className={`w-32 h-32 mx-auto border-3 border-dashed rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              theme === 'dark'
+                ? 'border-blue-600 hover:border-blue-500 hover:bg-blue-900/20'
+                : 'border-blue-300 hover:border-blue-500 hover:bg-blue-50'
             }`}
           >
             <User className="w-8 h-8 text-gray-400 mb-2" />
             <span className="text-xs text-gray-500 dark:text-gray-400 text-center px-2">
-              {data.personal.includePhoto ? 'Click to upload' : 'Enable photo first'}
+              Click to upload
             </span>
           </div>
         )}
@@ -119,24 +135,21 @@ export const PhotoSection: React.FC = () => {
         />
       </div>
 
-      {/* Upload Button */}
+      {/* Main Upload Button */}
       <button
         onClick={triggerFileInput}
-        disabled={!data.personal.includePhoto}
-        className={`w-full px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${
-          data.personal.includePhoto
-            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95'
-            : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+        className={`w-full px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 ${
+          theme === 'dark'
+            ? 'bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white'
+            : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
         }`}
       >
-        <Upload className="w-4 h-4" />
+        <Upload className="w-5 h-5" />
         <span>{data.personal.photo ? 'Change Photo' : 'Upload Photo from Desktop'}</span>
       </button>
 
       {/* Guidelines */}
-      <div className={`text-xs text-gray-500 dark:text-gray-400 space-y-1 ${
-        !data.personal.includePhoto ? 'opacity-50' : ''
-      }`}>
+      <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
         <p>• Recommended: Professional headshot</p>
         <p>• Format: JPG, PNG (max 5MB)</p>
         <p>• Size: Square aspect ratio works best</p>
