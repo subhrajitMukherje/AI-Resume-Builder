@@ -54,11 +54,6 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to generate summary';
       setError(errorMessage);
-      
-      // Show more helpful error message for API key issues
-      if (errorMessage.includes('OpenAI API key')) {
-        setError('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
-      }
     } finally {
       setLoading(false);
     }
@@ -86,11 +81,6 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to suggest skills';
       setError(errorMessage);
-      
-      // Show more helpful error message for API key issues
-      if (errorMessage.includes('OpenAI API key')) {
-        setError('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
-      }
     } finally {
       setLoading(false);
     }
@@ -112,11 +102,6 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to analyze job description';
       setError(errorMessage);
-      
-      // Show more helpful error message for API key issues
-      if (errorMessage.includes('OpenAI API key')) {
-        setError('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
-      }
     } finally {
       setLoading(false);
     }
@@ -178,8 +163,28 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
         {/* Content */}
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
           {error && (
-            <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-lg text-sm">
-              {error}
+            <div className="mb-4 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-lg">
+              <div className="flex items-start space-x-2">
+                <div className="flex-shrink-0 mt-0.5">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-1">AI Feature Error</p>
+                  <p className="text-sm">{error}</p>
+                  {error.includes('quota exceeded') && (
+                    <div className="mt-2 text-xs">
+                      <p className="font-medium">To resolve this issue:</p>
+                      <ol className="list-decimal list-inside mt-1 space-y-1">
+                        <li>Visit <a href="https://platform.openai.com/usage" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">OpenAI Usage Dashboard</a></li>
+                        <li>Check your current usage and billing status</li>
+                        <li>Add credits or upgrade your plan if needed</li>
+                      </ol>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 

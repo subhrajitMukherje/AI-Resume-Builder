@@ -50,6 +50,34 @@ export interface JobDescriptionAnalysis {
 }
 
 class OpenAIService {
+  private handleOpenAIError(error: any, operation: string): never {
+    console.error(`Error ${operation}:`, error);
+    
+    if (error instanceof Error && error.message.includes('OpenAI API key is not configured')) {
+      throw error;
+    }
+    
+    // Handle specific OpenAI API errors
+    if (error?.error?.code === 'insufficient_quota' || error?.status === 429) {
+      throw new Error(`OpenAI API quota exceeded. Please check your OpenAI account at https://platform.openai.com/usage to review your usage limits and billing details. You may need to upgrade your plan or add credits to continue using AI features.`);
+    }
+    
+    if (error?.status === 401) {
+      throw new Error('Invalid OpenAI API key. Please check that your API key is correct in the .env file.');
+    }
+    
+    if (error?.status === 403) {
+      throw new Error('OpenAI API access forbidden. Please check your API key permissions and billing status.');
+    }
+    
+    if (error?.status >= 500) {
+      throw new Error('OpenAI service is temporarily unavailable. Please try again in a few minutes.');
+    }
+    
+    // Generic error for other cases
+    throw new Error(`Failed to ${operation}. Please check your OpenAI API key and internet connection. If the problem persists, visit https://platform.openai.com/usage to check your account status.`);
+  }
+
   async generateBulletPoints(request: BulletPointRequest): Promise<string[]> {
     try {
       const client = getOpenAIClient();
@@ -83,11 +111,7 @@ class OpenAIService {
       const content = response.choices[0]?.message?.content || '';
       return content.split('\n').filter(line => line.trim().length > 0);
     } catch (error) {
-      console.error('Error generating bullet points:', error);
-      if (error instanceof Error && error.message.includes('OpenAI API key is not configured')) {
-        throw error;
-      }
-      throw new Error('Failed to generate bullet points. Please check your OpenAI API key and internet connection.');
+      this.handleOpenAIError(error, 'generate bullet points');
     }
   }
 
@@ -124,11 +148,7 @@ class OpenAIService {
 
       return response.choices[0]?.message?.content?.trim() || '';
     } catch (error) {
-      console.error('Error generating summary:', error);
-      if (error instanceof Error && error.message.includes('OpenAI API key is not configured')) {
-        throw error;
-      }
-      throw new Error('Failed to generate professional summary. Please check your OpenAI API key and internet connection.');
+      this.handleOpenAIError(error, 'generate professional summary');
     }
   }
 
@@ -165,11 +185,7 @@ class OpenAIService {
       const content = response.choices[0]?.message?.content || '';
       return JSON.parse(content);
     } catch (error) {
-      console.error('Error analyzing job description:', error);
-      if (error instanceof Error && error.message.includes('OpenAI API key is not configured')) {
-        throw error;
-      }
-      throw new Error('Failed to analyze job description. Please check your OpenAI API key and internet connection.');
+      this.handleOpenAIError(error, 'analyze job description');
     }
   }
 
@@ -198,11 +214,7 @@ class OpenAIService {
       const content = response.choices[0]?.message?.content || '';
       return content.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
     } catch (error) {
-      console.error('Error suggesting skills:', error);
-      if (error instanceof Error && error.message.includes('OpenAI API key is not configured')) {
-        throw error;
-      }
-      throw new Error('Failed to suggest skills. Please check your OpenAI API key and internet connection.');
+      this.handleOpenAIError(error, 'suggest skills');
     }
   }
 
@@ -239,11 +251,7 @@ class OpenAIService {
 
       return response.choices[0]?.message?.content?.trim() || content;
     } catch (error) {
-      console.error('Error improving content:', error);
-      if (error instanceof Error && error.message.includes('OpenAI API key is not configured')) {
-        throw error;
-      }
-      throw new Error('Failed to improve content. Please check your OpenAI API key and internet connection.');
+      this.handleOpenAIError(error, 'improve content');
     }
   }
 }
