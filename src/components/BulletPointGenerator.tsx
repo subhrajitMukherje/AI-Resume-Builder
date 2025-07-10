@@ -33,6 +33,13 @@ export const BulletPointGenerator: React.FC<BulletPointGeneratorProps> = ({ expe
       setGeneratedBullets(bullets);
     } catch (error) {
       console.error('Error generating bullet points:', error);
+      
+      // Check if it's an API key error
+      if (error instanceof Error && error.message.includes('OpenAI API key')) {
+        alert('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
+        return;
+      }
+      
       // Fallback to mock data if API fails
       const mockBullets = [
         `Led development of ${prompt} resulting in 25% increase in user engagement and 15% improvement in conversion rates`,

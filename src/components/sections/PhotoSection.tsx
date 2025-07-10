@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Camera, Upload, X, User, Eye, EyeOff } from 'lucide-react';
+import { Camera, Upload, X, User, Eye, EyeOff, ImagePlus } from 'lucide-react';
 import { useResumeStore } from '../../store/resumeStore';
 
 export const PhotoSection: React.FC = () => {
@@ -118,23 +118,48 @@ export const PhotoSection: React.FC = () => {
 
       {/* Upload Button */}
       {data.personal.includePhoto && (
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 font-medium active:scale-95"
-        >
-          <Upload className="w-4 h-4" />
-          <span>{data.personal.photo ? 'Change Photo' : 'Upload Photo'}</span>
-        </button>
+        <div className="space-y-3">
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 font-medium active:scale-95 shadow-lg"
+          >
+            <Upload className="w-5 h-5" />
+            <span>{data.personal.photo ? 'Change Photo' : 'Upload Photo'}</span>
+          </button>
+          
+          {/* Alternative Upload Button */}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className={`w-full px-4 py-3 border-2 border-dashed rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 font-medium active:scale-95 ${
+              theme === 'dark'
+                ? 'border-blue-400 text-blue-400 hover:bg-blue-900/20 hover:border-blue-300'
+                : 'border-blue-500 text-blue-600 hover:bg-blue-50 hover:border-blue-600'
+            }`}
+          >
+            <ImagePlus className="w-5 h-5" />
+            <span>Browse Files</span>
+          </button>
+        </div>
       )}
 
       {/* Guidelines */}
       <div className={`text-xs text-gray-500 dark:text-gray-400 space-y-1 ${
         !data.personal.includePhoto ? 'opacity-50' : ''
       }`}>
-        <p>• Recommended: Professional headshot</p>
-        <p>• Format: JPG, PNG (max 5MB)</p>
-        <p>• Size: Square aspect ratio works best</p>
-        <p>• Note: Photos may not be suitable for all industries</p>
+        <div className={`p-3 rounded-lg border ${
+          theme === 'dark' 
+            ? 'bg-gray-800 border-gray-600' 
+            : 'bg-gray-50 border-gray-200'
+        }`}>
+          <h4 className="font-medium text-sm mb-2 text-blue-600 dark:text-blue-400">Photo Guidelines:</h4>
+          <ul className="space-y-1">
+            <li>• <strong>Recommended:</strong> Professional headshot</li>
+            <li>• <strong>Format:</strong> JPG, PNG (max 5MB)</li>
+            <li>• <strong>Size:</strong> Square aspect ratio works best</li>
+            <li>• <strong>Quality:</strong> High resolution, good lighting</li>
+            <li>• <strong>Note:</strong> Photos may not be suitable for all industries</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

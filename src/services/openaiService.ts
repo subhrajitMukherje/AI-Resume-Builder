@@ -5,7 +5,8 @@ let openai: OpenAI | null = null;
 
 const initializeOpenAI = () => {
   const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-  if (!apiKey || apiKey === 'VITE_OPENAI_API_KEY') {
+  if (!apiKey || apiKey === 'your_openai_api_key_here' || apiKey.trim() === '') {
+    console.warn('OpenAI API key not found. Please set VITE_OPENAI_API_KEY in your .env file.');
     return null;
   }
   return new OpenAI({
@@ -19,7 +20,7 @@ const getOpenAIClient = () => {
     openai = initializeOpenAI();
   }
   if (!openai) {
-    throw new Error('OpenAI API key is not configured. Please add your API key to the .env file.');
+    throw new Error('OpenAI API key is not configured. Please add your OpenAI API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key');
   }
   return openai;
 };

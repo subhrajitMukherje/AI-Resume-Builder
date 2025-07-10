@@ -52,7 +52,13 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
       updateSummary(summary);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate summary');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to generate summary';
+      setError(errorMessage);
+      
+      // Show more helpful error message for API key issues
+      if (errorMessage.includes('OpenAI API key')) {
+        setError('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
+      }
     } finally {
       setLoading(false);
     }
@@ -78,7 +84,13 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
 
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to suggest skills');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to suggest skills';
+      setError(errorMessage);
+      
+      // Show more helpful error message for API key issues
+      if (errorMessage.includes('OpenAI API key')) {
+        setError('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
+      }
     } finally {
       setLoading(false);
     }
@@ -98,7 +110,13 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
       setAnalysisResult(result);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to analyze job description');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to analyze job description';
+      setError(errorMessage);
+      
+      // Show more helpful error message for API key issues
+      if (errorMessage.includes('OpenAI API key')) {
+        setError('OpenAI API key is not configured. Please add your API key to the .env file as VITE_OPENAI_API_KEY=your_actual_api_key and restart the development server.');
+      }
     } finally {
       setLoading(false);
     }
