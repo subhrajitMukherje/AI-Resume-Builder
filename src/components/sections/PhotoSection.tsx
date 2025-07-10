@@ -55,26 +55,43 @@ export const PhotoSection: React.FC = () => {
           <Camera className="w-4 h-4 text-blue-500" />
           <span>Profile Photo</span>
         </label>
-        <button
-          onClick={togglePhotoVisibility}
-          className={`flex items-center space-x-2 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-            data.personal.includePhoto
-              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-          }`}
-        >
-          {data.personal.includePhoto ? (
-            <>
-              <Eye className="w-4 h-4" />
-              <span>Visible</span>
-            </>
-          ) : (
-            <>
-              <EyeOff className="w-4 h-4" />
-              <span>Hidden</span>
-            </>
-          )}
-        </button>
+        <div className="flex items-center space-x-2">
+          {/* Plus button for photo upload */}
+          <button
+            onClick={triggerFileInput}
+            disabled={!data.personal.includePhoto}
+            className={`p-2 rounded-lg transition-all duration-200 ${
+              data.personal.includePhoto
+                ? 'bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg active:scale-95'
+                : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+            }`}
+            title={data.personal.includePhoto ? 'Upload photo from desktop' : 'Enable photo first'}
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+          
+          {/* Enable/Disable toggle */}
+          <button
+            onClick={togglePhotoVisibility}
+            className={`flex items-center space-x-2 px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+              data.personal.includePhoto
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+            }`}
+          >
+            {data.personal.includePhoto ? (
+              <>
+                <Eye className="w-4 h-4" />
+                <span>Visible</span>
+              </>
+            ) : (
+              <>
+                <EyeOff className="w-4 h-4" />
+                <span>Hidden</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Photo Upload Area */}
