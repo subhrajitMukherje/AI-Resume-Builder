@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Camera, Upload, X, User, Eye, EyeOff, ImagePlus } from 'lucide-react';
+import { Camera, Upload, X, User, Eye, EyeOff, ImagePlus, Plus } from 'lucide-react';
 import { useResumeStore } from '../../store/resumeStore';
 
 export const PhotoSection: React.FC = () => {
@@ -41,8 +41,14 @@ export const PhotoSection: React.FC = () => {
     updatePersonal({ includePhoto: !data.personal.includePhoto });
   }, [data.personal.includePhoto, updatePersonal]);
 
+  const triggerFileInput = useCallback(() => {
+    if (data.personal.includePhoto) {
+      fileInputRef.current?.click();
+    }
+  }, [data.personal.includePhoto]);
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Photo Visibility Toggle */}
       <div className="flex items-center justify-between">
         <label className="flex items-center space-x-2 text-sm font-medium">
@@ -92,7 +98,7 @@ export const PhotoSection: React.FC = () => {
           </div>
         ) : (
           <div
-            onClick={() => data.personal.includePhoto && fileInputRef.current?.click()}
+            onClick={triggerFileInput}
             className={`w-32 h-32 mx-auto border-3 border-dashed rounded-2xl flex flex-col items-center justify-center transition-all ${
               data.personal.includePhoto
                 ? 'border-blue-300 dark:border-blue-600 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer'
@@ -116,11 +122,12 @@ export const PhotoSection: React.FC = () => {
         />
       </div>
 
-      {/* Upload Button */}
+      {/* Upload Buttons */}
       {data.personal.includePhoto && (
         <div className="space-y-3">
+          {/* Primary Upload Button */}
           <button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={triggerFileInput}
             className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 font-medium active:scale-95 shadow-lg"
           >
             <Upload className="w-5 h-5" />
@@ -129,7 +136,7 @@ export const PhotoSection: React.FC = () => {
           
           {/* Alternative Upload Button */}
           <button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={triggerFileInput}
             className={`w-full px-4 py-3 border-2 border-dashed rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 font-medium active:scale-95 ${
               theme === 'dark'
                 ? 'border-blue-400 text-blue-400 hover:bg-blue-900/20 hover:border-blue-300'
@@ -139,26 +146,67 @@ export const PhotoSection: React.FC = () => {
             <ImagePlus className="w-5 h-5" />
             <span>Browse Files</span>
           </button>
+
+          {/* Quick Add Button */}
+          <button
+            onClick={triggerFileInput}
+            className={`w-full px-4 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm font-medium active:scale-95 ${
+              theme === 'dark'
+                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
+            }`}
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Profile Picture</span>
+          </button>
         </div>
       )}
 
-      {/* Guidelines */}
+      {/* Enhanced Guidelines */}
       <div className={`text-xs text-gray-500 dark:text-gray-400 space-y-1 ${
         !data.personal.includePhoto ? 'opacity-50' : ''
       }`}>
-        <div className={`p-3 rounded-lg border ${
+        <div className={`p-4 rounded-xl border ${
           theme === 'dark' 
             ? 'bg-gray-800 border-gray-600' 
             : 'bg-gray-50 border-gray-200'
         }`}>
-          <h4 className="font-medium text-sm mb-2 text-blue-600 dark:text-blue-400">Photo Guidelines:</h4>
-          <ul className="space-y-1">
-            <li>• <strong>Recommended:</strong> Professional headshot</li>
-            <li>• <strong>Format:</strong> JPG, PNG (max 5MB)</li>
-            <li>• <strong>Size:</strong> Square aspect ratio works best</li>
-            <li>• <strong>Quality:</strong> High resolution, good lighting</li>
-            <li>• <strong>Note:</strong> Photos may not be suitable for all industries</li>
-          </ul>
+          <h4 className="font-medium text-sm mb-3 text-blue-600 dark:text-blue-400 flex items-center space-x-2">
+            <Camera className="w-4 h-4" />
+            <span>Photo Guidelines</span>
+          </h4>
+          <div className="grid grid-cols-1 gap-2">
+            <div className="flex items-start space-x-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium">Recommended:</span> Professional headshot with good lighting
+              </div>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium">Format:</span> JPG, PNG, WebP (max 5MB)
+              </div>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium">Size:</span> Square aspect ratio works best
+              </div>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium">Quality:</span> High resolution, clear facial features
+              </div>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-2 h-2 bg-yellow-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div>
+                <span className="font-medium">Note:</span> Consider industry standards for photos
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
