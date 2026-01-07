@@ -54,36 +54,38 @@ export const ResumeBuilder: React.FC = () => {
         />
 
         {/* Mobile View Toggle */}
-        <div className="lg:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40">
-          <div className={`flex rounded-2xl p-1 shadow-lg border ${
+        <div className="lg:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 safe-area-inset">
+          <div className={`flex rounded-2xl p-1.5 shadow-2xl border-2 ${
             theme === 'dark'
-              ? 'bg-gray-800 border-gray-700'
-              : 'bg-white border-gray-200'
+              ? 'bg-gray-800/95 border-gray-700 backdrop-blur-lg'
+              : 'bg-white/95 border-gray-200 backdrop-blur-lg'
           }`}>
             <button
               onClick={() => setMobileView('edit')}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+              className={`px-8 py-3.5 rounded-xl font-semibold transition-all duration-200 touch-target touch-manipulation active:scale-95 min-w-[120px] ${
                 mobileView === 'edit'
-                  ? 'bg-blue-500 text-white shadow-md'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-blue-500 text-white shadow-lg'
+                  : 'text-gray-600 dark:text-gray-400'
               }`}
+              aria-label="Switch to edit mode"
             >
               Edit
             </button>
             <button
               onClick={() => setMobileView('preview')}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+              className={`px-8 py-3.5 rounded-xl font-semibold transition-all duration-200 touch-target touch-manipulation active:scale-95 min-w-[120px] ${
                 mobileView === 'preview'
-                  ? 'bg-blue-500 text-white shadow-md'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-blue-500 text-white shadow-lg'
+                  : 'text-gray-600 dark:text-gray-400'
               }`}
+              aria-label="Switch to preview mode"
             >
               Preview
             </button>
           </div>
         </div>
-        
-        <div className="flex flex-col lg:flex-row min-h-screen pt-14 sm:pt-16 pb-20 lg:pb-0">
+
+        <div className="flex flex-col lg:flex-row min-h-screen pt-16 sm:pt-18 pb-28 lg:pb-0">
           {/* Side Panel */}
           <div className={`lg:w-1/3 xl:w-1/4 ${
             mobileView === 'edit' ? 'block' : 'hidden lg:block'

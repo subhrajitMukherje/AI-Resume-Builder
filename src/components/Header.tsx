@@ -13,13 +13,13 @@ export const Header: React.FC<HeaderProps> = ({ onExport, onSaveLoad, onAIAssist
   const { theme, toggleTheme, template, setTemplate } = useResumeStore();
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-      theme === 'dark' 
-        ? 'bg-gray-900/95 border-gray-700' 
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 safe-area-inset ${
+      theme === 'dark'
+        ? 'bg-gray-900/95 border-gray-700'
         : 'bg-white/95 border-gray-200'
     } border-b backdrop-blur-lg shadow-lg`}>
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16">
+      <div className="max-w-7xl mx-auto mobile-container">
+        <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg">
@@ -43,11 +43,12 @@ export const Header: React.FC<HeaderProps> = ({ onExport, onSaveLoad, onAIAssist
           {/* Mobile Menu Button */}
           <button
             onClick={onToggleMobileMenu}
-            className={`sm:hidden p-2 rounded-xl transition-all duration-200 ${
+            className={`sm:hidden p-3 rounded-xl transition-all duration-200 touch-target touch-manipulation active:scale-95 ${
               theme === 'dark'
                 ? 'hover:bg-gray-800 text-gray-300 hover:text-white'
                 : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
             }`}
+            aria-label="Open menu"
           >
             <Menu className="w-6 h-6" />
           </button>

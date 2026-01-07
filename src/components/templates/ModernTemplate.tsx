@@ -10,11 +10,11 @@ export const ModernTemplate: React.FC = memo(() => {
   return (
     <div className="bg-white text-gray-900 min-h-[11in] w-full max-w-[8.5in] mx-auto shadow-lg">
       {/* Header */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 flex items-center space-x-6">
+      <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center sm:space-x-6 space-y-4 sm:space-y-0">
         {/* Photo */}
         {data.personal.includePhoto && data.personal.photo && (
           <div className="flex-shrink-0">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white/20 shadow-xl">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-white/20 shadow-xl">
               <img
                 src={data.personal.photo}
                 alt={data.personal.name || 'Profile'}
@@ -23,11 +23,11 @@ export const ModernTemplate: React.FC = memo(() => {
             </div>
           </div>
         )}
-        
+
         {/* Header Content */}
-        <div className="relative z-10">
-          <h1 className="text-4xl font-bold mb-2">{data.personal.name || 'Your Name'}</h1>
-          <div className="flex flex-wrap gap-4 text-sm">
+        <div className="relative z-10 text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">{data.personal.name || 'Your Name'}</h1>
+          <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3 lg:gap-4 text-xs sm:text-sm">
             {data.personal.email && (
               <div className="flex items-center space-x-1">
                 <Mail className="w-4 h-4" />
@@ -70,7 +70,7 @@ export const ModernTemplate: React.FC = memo(() => {
       </div>
 
       {/* Content */}
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-5 lg:space-y-6">
         {visibleSections.map((section) => {
           switch (section.type) {
             case 'summary':

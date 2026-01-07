@@ -21,18 +21,18 @@ const ResumePreview: React.FC = memo(() => {
   }, [template]);
 
   return (
-    <div className={`h-full overflow-y-auto ${
+    <div className={`h-full overflow-y-auto smooth-scroll ${
       theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
     }`}>
-      <div className="p-4 flex justify-center">
+      <div className="p-2 sm:p-4 lg:p-6 flex justify-center mobile-container">
         <div className="w-full max-w-4xl">
-          <div className="mb-4 text-center">
-            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+          <div className="mb-3 sm:mb-4 text-center">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-700 dark:text-gray-300">
               Preview - {template.charAt(0).toUpperCase() + template.slice(1)} Template
             </h3>
           </div>
-          
-          <div id="resume-preview" className="shadow-2xl transition-all duration-300">
+
+          <div id="resume-preview" className="shadow-xl sm:shadow-2xl transition-all duration-300 rounded-lg overflow-hidden">
             <TemplateComponent />
           </div>
         </div>
